@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Love Jar 💕</title>
+  <!-- Lovey-dovey Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+  <!-- Mammoth.js for DOCX parsing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen">
+    <h2>💕 Welcome to the Love Jar 💕</h2>
+    <input type="text" id="username" placeholder="Enter your name"/>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- Main App -->
+  <div id="main-app" class="hidden">
+    <h1 class="lovey">🎀 Love Jar 🎀</h1>
+
+    <!-- Extra doodles -->
+    <div id="header-doodles">
+      <span class="ribbon">🎀</span>
+      <span class="cat">🐱</span>
+      <span class="ribbon">🎀</span>
+    </div>
+
+    <!-- File Upload Section -->
+    <div id="upload-section">
+      <p>Upload your wishes list (TXT or DOCX) or load dummy wishes:</p>
+      <input type="file" id="fileInput" accept=".txt,.docx" onchange="uploadFile(event)"/>
+      <br/>
+      <button onclick="loadDummyWishes()">Load Dummy Wishes</button>
+    </div>
+
+    <!-- Display number of wishes loaded -->
+    <p id="task-count">0 wishes loaded</p>
+
+    <!-- Button to pick a wish -->
+    <button onclick="pickTask()">Pick a Wish</button>
+
+    <!-- Jar Container -->
+    <div id="jar-container">
+      <div class="jar">
+        <!-- Lid sits above the jar, toggles open on click -->
+        <div class="jar-lid" onclick="toggleLid()"></div>
+
+        <!-- Jar Body below -->
+        <div class="jar-body">
+          <div id="chits"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden paper element (simulates the picked wish) -->
+    <div id="paper" class="hidden">
+      <div class="paper-content"></div>
+    </div>
+
+    <!-- Hand Animation Container (drawn with CSS) -->
+    <div id="hand-container" class="hidden">
+      <div class="hand"></div>
+    </div>
+
+    <!-- Popup Modal for the picked wish -->
+    <div id="popup" class="hidden" style="display: none;">
+      <div class="popup-content">
+        <span class="close" onclick="closePopup()">&times;</span>
+        <p id="popup-text"></p>
+      </div>
+    </div>
+
+    <!-- Celebration Container for confetti -->
+    <div id="celebration" class="hidden"></div>
+
+    <!-- Secret Message Section -->
+    <div id="secret-message">
+      <h3 class="lovey">💌 Secret Message 💌</h3>
+      <textarea id="messageInput" placeholder="Write a love note..."></textarea>
+      <button onclick="saveMessage()">Save</button>
+      <p id="saved-message"></p>
+    </div>
+
+    <!-- Extra Footer Doodles -->
+    <div id="footer-doodles">
+      <span class="cat">🐱</span>
+      <span class="ribbon">🎀</span>
+      <span class="cat">🐱</span>
+    </div>
+  </div>
+</body>
+</html>
