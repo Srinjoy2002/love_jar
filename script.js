@@ -127,30 +127,52 @@ function closePopup() {
   showCelebration();
 }
 
-// Celebration animation (confetti)
+// Celebration animation: Confetti, party poppers, and stars
 function showCelebration() {
   const celebration = document.getElementById("celebration");
   celebration.classList.remove("hidden");
   celebration.innerHTML = "";
-  for (let i = 0; i < 50; i++) {
-    const confetti = document.createElement("div");
-    confetti.classList.add("confetti");
-    const colors = ["#ff4d6d", "#ff8fab", "#ffccd5", "#fff0f6", "#fdd7b0"];
-    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.left = Math.random() * 100 + "vw";
-    confetti.style.top = Math.random() * 100 + "vh";
-    confetti.style.animationDelay = Math.random() * 0.5 + "s";
-    celebration.appendChild(confetti);
+  const totalShapes = 80;
+  const shapeTypes = ["confetti", "popper", "star"];
+  
+  for (let i = 0; i < totalShapes; i++) {
+    const randomType = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+    const shape = document.createElement("div");
+    shape.classList.add(randomType);
+    
+    // For confetti and poppers, assign a random color
+    if (randomType === "confetti" || randomType === "popper") {
+      const colors = ["#ff4d6d", "#ff8fab", "#ffccd5", "#fff0f6", "#fdd7b0", "#0ff", "#ff0", "#0f0"];
+      const randomColor = colors[Math.floor(Math.random() * colors.length)];
+      if (randomType === "confetti") {
+        shape.style.background = randomColor;
+      }
+      if (randomType === "popper") {
+        shape.style.background = `linear-gradient(45deg, ${randomColor}, ${
+          colors[Math.floor(Math.random() * colors.length)]
+        })`;
+      }
+    }
+    if (randomType === "star") {
+      const starColors = ["#ff4d6d", "#ff8fab", "#ffccd5", "#fdd7b0", "#0ff", "#0f0", "#ff0"];
+      const starColor = starColors[Math.floor(Math.random() * starColors.length)];
+      shape.style.setProperty("--starColor", starColor);
+    }
+    
+    shape.style.left = Math.random() * 100 + "vw";
+    shape.style.top = Math.random() * 100 + "vh";
+    shape.style.animationDelay = (Math.random() * 1) + "s";
+    celebration.appendChild(shape);
   }
+  // Remove celebration after 5.5s (slightly longer than the 5s duration)
   setTimeout(() => {
     celebration.classList.add("hidden");
     celebration.innerHTML = "";
-  }, 3000);
+  }, 5500);
 }
 
 /** 
- * Toggle the jar lid's "open" class so it stays open once clicked,
- * and closes again on subsequent click.
+ * Toggle the jar lid's "open" class so it stays open until toggled again.
  */
 function toggleLid() {
   const lid = document.querySelector(".jar-lid");
@@ -163,7 +185,6 @@ function saveMessage() {
   localStorage.setItem("secretMessage", message);
   document.getElementById("saved-message").innerText = message;
 }
-
 function loadSecretMessage() {
   const savedMessage = localStorage.getItem("secretMessage");
   if (savedMessage) {

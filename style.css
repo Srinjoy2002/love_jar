@@ -1,290 +1,367 @@
 /* Basic Styles */
 body {
-    text-align: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #fff0f6, #ffebf3);
-    color: #ff4d6d;
-    margin: 0;
-    padding: 20px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #fff0f6, #ffebf3);
+  color: #ff4d6d;
+  margin: 0;
+  padding: 20px;
+}
+
+.lovey {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3rem;
+}
+
+.hidden {
+  display: none;
+}
+
+h2, h3 {
+  font-family: 'Dancing Script', cursive;
+  margin: 10px 0;
+}
+
+button {
+  background: #ff8fab;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin: 10px;
+  font-size: 1rem;
+}
+button:hover {
+  background: #ff4d6d;
+  transform: scale(1.02);
+}
+
+input[type="text"],
+textarea {
+  width: 80%;
+  padding: 10px;
+  border: 2px solid #ff4d6d;
+  border-radius: 10px;
+  margin: 10px 0;
+  font-size: 1rem;
+}
+textarea {
+  height: 60px;
+  resize: none;
+}
+
+/* Header and Footer doodles */
+#header-doodles, #footer-doodles {
+  margin: 10px 0;
+}
+#header-doodles span, #footer-doodles span {
+  font-size: 2rem;
+  margin: 0 5px;
+}
+
+/* Jar Container with Perspective */
+#jar-container {
+  position: relative;
+  width: 260px;
+  height: 420px;
+  margin: 30px auto;
+  perspective: 1000px;
+}
+
+/* Jar: no overflow hidden, so the lid can animate outside */
+.jar {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Jar Lid: centered on top and clearly visible */
+.jar-lid {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 40px;
+  background: linear-gradient(135deg, #ffccd5, #ffc0cb);
+  border: 3px solid rgba(255, 77, 109, 0.8);
+  border-bottom: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.6s ease-in-out;
+  transform-origin: center bottom;
+  z-index: 5;
+}
+.jar-lid.open {
+  /* Rotate and translate so the lid rolls away and stays open */
+  transform: translateX(-50%) rotate(45deg) translateY(-60px);
+}
+
+/* Jar Body: use clip-path for a smooth, curved jar shape */
+.jar-body {
+  position: absolute;
+  top: 40px; /* leave space for the lid */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 370px;
+  padding: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+  border: 3px solid rgba(255, 77, 109, 0.8);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.2);
+  border-radius: 0 0 80px 80px;
+  /* Clip-path for a narrower top and wider bottom */
+  clip-path: polygon(
+    15% 0%, 85% 0%, 100% 10%, 100% 100%, 0% 100%, 0% 10%
+  );
+  /* Hide the scrollbar */
+  overflow-y: auto;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.jar-body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Chits inside the jar */
+#chits {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+}
+
+/* Realistic Paper Chits with a cute ribbon (🎀) */
+.chit {
+  width: 50px;
+  height: 70px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  position: relative;
+  transition: transform 0.3s;
+}
+.chit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-width: 0 14px 14px 0;
+  border-style: solid;
+  border-color: transparent #f5f5f5 transparent transparent;
+}
+.chit::before {
+  content: "🎀";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+}
+.chit.rotate {
+  transform: rotate(var(--rotation));
+}
+
+/* Floating animation for chits */
+@keyframes chitFloat {
+  0% { transform: translateY(0) rotate(var(--rotation)); }
+  50% { transform: translateY(-5px) rotate(var(--rotation)); }
+  100% { transform: translateY(0) rotate(var(--rotation)); }
+}
+.chit {
+  animation: chitFloat 3s ease-in-out infinite;
+}
+
+/* Paper (for picked wish) */
+#paper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 100px;
+  background: #fff;
+  border: 2px dashed #ff4d6d;
+  border-radius: 8px;
+  transform: translate(-50%, -50%) scale(0);
+  animation: paperAppear 0.5s forwards;
+  z-index: 900;
+}
+.paper-content {
+  padding: 10px;
+  font-size: 1rem;
+  color: #333;
+}
+@keyframes paperAppear {
+  from { transform: translate(-50%, -50%) scale(0); }
+  to { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Hand Animation Container */
+#hand-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  z-index: 1000;
+}
+.hand {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #fdd7b0, #fbbf9f);
+  border: 2px solid #ff4d6d;
+  border-radius: 50% 50% 40% 40%;
+  position: absolute;
+}
+@keyframes handPick {
+  0% {
+    left: -70px;
+    top: 30%;
+    opacity: 0;
   }
-  
-  .lovey {
-    font-family: 'Great Vibes', cursive;
-    font-size: 3rem;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  h2, h3 {
-    font-family: 'Dancing Script', cursive;
-    margin: 10px 0;
-  }
-  
-  button {
-    background: #ff8fab;
-    border: none;
-    padding: 10px 20px;
-    color: white;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-    margin: 10px;
-    font-size: 1rem;
-  }
-  
-  button:hover {
-    background: #ff4d6d;
-    transform: scale(1.02);
-  }
-  
-  input[type="text"],
-  textarea {
-    width: 80%;
-    padding: 10px;
-    border: 2px solid #ff4d6d;
-    border-radius: 10px;
-    margin: 10px 0;
-    font-size: 1rem;
-  }
-  
-  textarea {
-    height: 60px;
-    resize: none;
-  }
-  
-  /* Header and Footer doodles */
-  #header-doodles, #footer-doodles {
-    margin: 10px 0;
-  }
-  
-  #header-doodles span, #footer-doodles span {
-    font-size: 2rem;
-    margin: 0 5px;
-  }
-  
-  /* Jar Container with Perspective */
+  20% { opacity: 1; }
+  50% { left: 50%; top: 60%; }
+  70% { left: 50%; top: 60%; }
+  100% { left: 120%; opacity: 0; }
+}
+
+/* Popup Modal */
+#popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.popup-content {
+  background: #fff0f6;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.5s;
+}
+.popup-content .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Celebration (Grander Confetti, Party Poppers, and Stars) */
+#celebration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3000;
+  overflow: hidden;
+}
+.confetti,
+.popper,
+.star {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  opacity: 0.9;
+  transform: rotate(45deg);
+  animation: confettiFall 5s linear forwards;
+}
+/* Confetti (squares) */
+.confetti {
+  background: red;
+}
+/* Party poppers (rectangular with tapered top) */
+.popper {
+  width: 18px;
+  height: 30px;
+  background: linear-gradient(45deg, #f0f, #ff0);
+  border-radius: 6px 6px 2px 2px;
+  transform: rotate(0deg);
+  animation: popperFall 5s linear forwards;
+}
+/* Star shapes using clip-path */
+.star {
+  width: 16px;
+  height: 16px;
+  background: transparent;
+  transform: none;
+  animation: starFall 5s linear forwards;
+}
+.star::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--starColor, #0ff);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+}
+
+/* Keyframes */
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+@keyframes popperFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(-360deg); opacity: 0; }
+}
+@keyframes starFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Media Query for Mobile Responsiveness */
+@media (max-width: 600px) {
   #jar-container {
-    position: relative;
-    width: 260px;
-    height: 380px;
-    margin: 30px auto;
-    perspective: 1000px;
+    width: 180px;
+    height: 320px;
   }
-  
-  /* The jar (Glass Body) - remove overflow: hidden so the lid won't be clipped */
-  .jar {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border: 3px solid rgba(255, 77, 109, 0.8);
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.2);
-  }
-  
-  /* Lid perched above the jar, toggles open on click */
-  .jar-lid {
-    position: absolute;
-    top: -40px; /* so it’s clearly above the jar */
-    left: 10%;
-    width: 80%;
-    height: 45px;
-    background: linear-gradient(135deg, #ffccd5, #ffc0cb);
-    border: 3px solid rgba(255, 77, 109, 0.8);
-    border-bottom: none;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    z-index: 5;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    cursor: pointer;
-    transition: transform 0.6s ease-in-out;
-    transform-origin: center bottom; /* pivot from bottom center */
-  }
-  
-  /* When "open" class is toggled, rotate & shift away */
-  .jar-lid.open {
-    transform: rotate(40deg) translate(80px, -20px);
-  }
-  
-  /* Jar Body for the chits */
   .jar-body {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-    overflow-y: auto;
-    background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
-    border-top: 1px solid rgba(255,77,109,0.8);
-    z-index: 1;
-  }
-  
-  /* Chits inside the jar */
-  #chits {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-  
-  /* Realistic Paper Chits with 🎀 on them */
-  .chit {
-    width: 60px;
-    height: 80px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    position: relative;
-    transition: transform 0.3s;
-  }
-  
-  /* Folded Corner Effect */
-  .chit::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-width: 0 16px 16px 0;
-    border-style: solid;
-    border-color: transparent #f5f5f5 transparent transparent;
-  }
-  
-  /* Cute ribbon emoji on each chit */
-  .chit::before {
-    content: "🎀";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.2rem;
-  }
-  
-  /* Random rotation (set via JS) */
-  .chit.rotate {
-    transform: rotate(var(--rotation));
-  }
-  
-  /* Floating Animation for chits */
-  @keyframes chitFloat {
-    0% { transform: translateY(0) rotate(var(--rotation)); }
-    50% { transform: translateY(-5px) rotate(var(--rotation)); }
-    100% { transform: translateY(0) rotate(var(--rotation)); }
+    width: 140px;
+    height: 260px;
   }
   .chit {
-    animation: chitFloat 3s ease-in-out infinite;
+    width: 40px;
+    height: 56px;
   }
-  
-  /* Paper (picked wish) */
-  #paper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 160px;
-    height: 100px;
-    background: #fff;
-    border: 2px dashed #ff4d6d;
-    border-radius: 8px;
-    transform: translate(-50%, -50%) scale(0);
-    animation: paperAppear 0.5s forwards;
-    z-index: 900;
+  .jar-lid {
+    width: 90px;
+    height: 30px;
   }
-  
-  .paper-content {
-    padding: 10px;
-    font-size: 1rem;
-    color: #333;
+  button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
   }
-  
-  /* Paper Appearance Animation */
-  @keyframes paperAppear {
-    from { transform: translate(-50%, -50%) scale(0); }
-    to { transform: translate(-50%, -50%) scale(1); }
+  h1.lovey {
+    font-size: 2rem;
   }
-  
-  /* Hand picking animation */
-  #hand-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 60px;
-    z-index: 1000;
-  }
-  .hand {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #fdd7b0, #fbbf9f);
-    border: 2px solid #ff4d6d;
-    border-radius: 50% 50% 40% 40%;
-    position: absolute;
-  }
-  @keyframes handPick {
-    0% {
-      left: -70px;
-      top: 30%;
-      opacity: 0;
-    }
-    20% { opacity: 1; }
-    50% { left: 50%; top: 60%; }
-    70% { left: 50%; top: 60%; }
-    100% { left: 120%; opacity: 0; }
-  }
-  
-  /* Popup Modal */
-  #popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .popup-content {
-    background: #fff0f6;
-    padding: 25px;
-    border-radius: 20px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    animation: fadeIn 0.5s;
-  }
-  .popup-content .close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    cursor: pointer;
-  }
-  
-  /* Celebration (Confetti) */
-  #celebration {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 3000;
-  }
-  .confetti {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: red;
-    opacity: 0.9;
-    transform: rotate(45deg);
-    animation: confettiFall 3s linear forwards;
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
-  }
-  
+}
