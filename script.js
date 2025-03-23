@@ -68,7 +68,6 @@ function updateJar() {
   tasks.forEach(() => {
     const chit = document.createElement("div");
     chit.classList.add("chit");
-    // Apply a random rotation between -5 and 5 degrees
     const rotation = (Math.random() * 10 - 5).toFixed(1) + "deg";
     chit.style.setProperty("--rotation", rotation);
     chit.classList.add("rotate");
@@ -76,42 +75,52 @@ function updateJar() {
   });
 }
 
-// Animate hand picking a wish, show the popup, and remove the wish
+// Animate hand picking a wish, then show a 5-second suspense timer, then final popup
 function pickTask() {
   if (tasks.length < 1) {
     alert("No more wishes! Please upload a new list or load dummy wishes.");
     return;
   }
-  // Choose a random wish and remove it from the array
+  // Pick a random wish and remove from array
   const index = Math.floor(Math.random() * tasks.length);
   const randomTask = tasks.splice(index, 1)[0];
   updateJar();
 
-  // Prepare paper element with the chosen wish
-  const paper = document.getElementById("paper");
-  paper.querySelector(".paper-content").innerText = randomTask;
-  paper.classList.remove("hidden");
-  paper.style.animation = "paperAppear 0.5s forwards";
-
-  // Animate hand picking the paper
+  // Show the hand animation
   const handContainer = document.getElementById("hand-container");
   handContainer.classList.remove("hidden");
   const hand = document.querySelector(".hand");
   hand.style.animation = "handPick 1.5s forwards";
 
-  // After hand animation ends, show popup and hide paper
   hand.addEventListener("animationend", function handleAnimationEnd() {
     hand.style.animation = "";
     handContainer.classList.add("hidden");
-    showPopup(randomTask);
-    setTimeout(() => {
-      paper.classList.add("hidden");
-    }, 1000);
+    // Start the suspense timer for 5 seconds
+    startSuspenseTimer(randomTask);
     hand.removeEventListener("animationend", handleAnimationEnd);
   });
 }
 
-// Show popup modal with the chosen wish
+// Start a 5-second suspense timer
+function startSuspenseTimer(taskText) {
+  const timerEl = document.getElementById("suspense-timer");
+  const timerText = document.getElementById("timer-text");
+  let count = 5;
+  timerText.innerText = count;
+  timerEl.classList.remove("hidden");
+  
+  const countdown = setInterval(() => {
+    count--;
+    timerText.innerText = count;
+    if (count <= 0) {
+      clearInterval(countdown);
+      timerEl.classList.add("hidden");
+      showPopup(taskText);
+    }
+  }, 1000);
+}
+
+// Show the final popup with the chosen wish
 function showPopup(taskText) {
   document.getElementById("popup-text").innerText = taskText;
   const popup = document.getElementById("popup");
@@ -119,7 +128,7 @@ function showPopup(taskText) {
   popup.style.display = "flex";
 }
 
-// Close popup modal and trigger celebration animation
+// Close popup modal and trigger celebration
 function closePopup() {
   const popup = document.getElementById("popup");
   popup.classList.add("hidden");
@@ -127,7 +136,7 @@ function closePopup() {
   showCelebration();
 }
 
-// Celebration animation: Confetti, party poppers, and stars
+// Celebration with confetti, party poppers, and stars
 function showCelebration() {
   const celebration = document.getElementById("celebration");
   celebration.classList.remove("hidden");
@@ -140,7 +149,6 @@ function showCelebration() {
     const shape = document.createElement("div");
     shape.classList.add(randomType);
     
-    // For confetti and poppers, assign a random color
     if (randomType === "confetti" || randomType === "popper") {
       const colors = ["#ff4d6d", "#ff8fab", "#ffccd5", "#fff0f6", "#fdd7b0", "#0ff", "#ff0", "#0f0"];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
@@ -158,13 +166,11 @@ function showCelebration() {
       const starColor = starColors[Math.floor(Math.random() * starColors.length)];
       shape.style.setProperty("--starColor", starColor);
     }
-    
     shape.style.left = Math.random() * 100 + "vw";
     shape.style.top = Math.random() * 100 + "vh";
     shape.style.animationDelay = (Math.random() * 1) + "s";
     celebration.appendChild(shape);
   }
-  // Remove celebration after 5.5s (slightly longer than the 5s duration)
   setTimeout(() => {
     celebration.classList.add("hidden");
     celebration.innerHTML = "";

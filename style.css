@@ -70,7 +70,7 @@ textarea {
   perspective: 1000px;
 }
 
-/* Jar: no overflow hidden, so the lid can animate outside */
+/* Jar: no overflow hidden so the lid can animate freely */
 .jar {
   position: relative;
   width: 100%;
@@ -97,11 +97,10 @@ textarea {
   z-index: 5;
 }
 .jar-lid.open {
-  /* Rotate and translate so the lid rolls away and stays open */
   transform: translateX(-50%) rotate(45deg) translateY(-60px);
 }
 
-/* Jar Body: use clip-path for a smooth, curved jar shape */
+/* Jar Body: clip-path for smooth jar shape and no visible scrollbar */
 .jar-body {
   position: absolute;
   top: 40px; /* leave space for the lid */
@@ -114,14 +113,10 @@ textarea {
   border: 3px solid rgba(255, 77, 109, 0.8);
   box-shadow: inset 0 0 10px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.2);
   border-radius: 0 0 80px 80px;
-  /* Clip-path for a narrower top and wider bottom */
-  clip-path: polygon(
-    15% 0%, 85% 0%, 100% 10%, 100% 100%, 0% 100%, 0% 10%
-  );
-  /* Hide the scrollbar */
+  clip-path: polygon(15% 0%, 85% 0%, 100% 10%, 100% 100%, 0% 100%, 0% 10%);
   overflow-y: auto;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 .jar-body::-webkit-scrollbar {
   display: none;
@@ -167,8 +162,6 @@ textarea {
 .chit.rotate {
   transform: rotate(var(--rotation));
 }
-
-/* Floating animation for chits */
 @keyframes chitFloat {
   0% { transform: translateY(0) rotate(var(--rotation)); }
   50% { transform: translateY(-5px) rotate(var(--rotation)); }
@@ -178,28 +171,22 @@ textarea {
   animation: chitFloat 3s ease-in-out infinite;
 }
 
-/* Paper (for picked wish) */
-#paper {
+/* Suspense Timer (5s countdown) */
+#suspense-timer {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 160px;
-  height: 100px;
-  background: #fff;
-  border: 2px dashed #ff4d6d;
-  border-radius: 8px;
-  transform: translate(-50%, -50%) scale(0);
-  animation: paperAppear 0.5s forwards;
-  z-index: 900;
+  transform: translate(-50%, -50%);
+  z-index: 800;
+  background: rgba(255,255,255,0.8);
+  border: 2px solid #ff4d6d;
+  border-radius: 10px;
+  padding: 20px;
 }
-.paper-content {
-  padding: 10px;
-  font-size: 1rem;
-  color: #333;
-}
-@keyframes paperAppear {
-  from { transform: translate(-50%, -50%) scale(0); }
-  to { transform: translate(-50%, -50%) scale(1); }
+#suspense-timer p {
+  font-size: 2rem;
+  margin: 0;
+  color: #ff4d6d;
 }
 
 /* Hand Animation Container */
@@ -231,7 +218,7 @@ textarea {
   100% { left: 120%; opacity: 0; }
 }
 
-/* Popup Modal */
+/* Final Popup Modal (only one popup) */
 #popup {
   position: fixed;
   top: 0;
@@ -261,7 +248,7 @@ textarea {
   cursor: pointer;
 }
 
-/* Celebration (Grander Confetti, Party Poppers, and Stars) */
+/* Celebration (Confetti, Party Poppers, and Stars) */
 #celebration {
   position: fixed;
   top: 0;
@@ -282,11 +269,9 @@ textarea {
   transform: rotate(45deg);
   animation: confettiFall 5s linear forwards;
 }
-/* Confetti (squares) */
 .confetti {
   background: red;
 }
-/* Party poppers (rectangular with tapered top) */
 .popper {
   width: 18px;
   height: 30px;
@@ -295,7 +280,6 @@ textarea {
   transform: rotate(0deg);
   animation: popperFall 5s linear forwards;
 }
-/* Star shapes using clip-path */
 .star {
   width: 16px;
   height: 16px;
@@ -324,8 +308,6 @@ textarea {
     39% 35%
   );
 }
-
-/* Keyframes */
 @keyframes confettiFall {
   0% { transform: translateY(0) rotate(0deg); opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
@@ -339,7 +321,7 @@ textarea {
   100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
 }
 
-/* Media Query for Mobile Responsiveness */
+/* Mobile Responsiveness */
 @media (max-width: 600px) {
   #jar-container {
     width: 180px;
@@ -356,6 +338,7 @@ textarea {
   .jar-lid {
     width: 90px;
     height: 30px;
+    transform-origin: center bottom;
   }
   button {
     font-size: 0.9rem;
@@ -363,5 +346,8 @@ textarea {
   }
   h1.lovey {
     font-size: 2rem;
+  }
+  #suspense-timer p {
+    font-size: 1.5rem;
   }
 }

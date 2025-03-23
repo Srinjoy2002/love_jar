@@ -56,9 +56,9 @@
       </div>
     </div>
 
-    <!-- Hidden paper element (for the picked wish) -->
-    <div id="paper" class="hidden">
-      <div class="paper-content"></div>
+    <!-- Suspense Timer (hidden by default) -->
+    <div id="suspense-timer" class="hidden">
+      <p id="timer-text">5</p>
     </div>
 
     <!-- Hand Animation Container -->
@@ -66,7 +66,7 @@
       <div class="hand"></div>
     </div>
 
-    <!-- Popup Modal for the picked wish -->
+    <!-- Final Popup Modal (for the chosen wish) -->
     <div id="popup" class="hidden" style="display: none;">
       <div class="popup-content">
         <span class="close" onclick="closePopup()">&times;</span>
