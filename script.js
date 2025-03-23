@@ -1,31 +1,33 @@
 let tasks = [];
 let username = localStorage.getItem("username") || "";
 
-// Login function
+// Login function: hides login and starts background music.
 function login() {
   username = document.getElementById("username").value;
   if (username.trim() !== "") {
     localStorage.setItem("username", username);
     document.getElementById("login-screen").classList.add("hidden");
     document.getElementById("main-app").classList.remove("hidden");
+    // Start playing background music (ensure music.mp3 is in your folder)
+    const music = document.getElementById("background-music");
+    if (music) {
+      music.play().catch(err => console.log("Music play failed", err));
+    }
     loadSecretMessage();
     updateJar();
   }
 }
 
-// Parse wishes from uploaded text—remove leading numbering or bullet points
+// Parse wishes: remove leading numbering/bullets.
 function parseWishes(text) {
   const lines = text.split(/\r?\n/);
-  return lines
-    .map(line => line.trim().replace(/^[\d\.\-\)\s]*\s*/, ''))
-    .filter(line => line !== "");
+  return lines.map(line => line.trim().replace(/^[\d\.\-\)\s]*\s*/, '')).filter(line => line !== "");
 }
 
-// File upload handler (TXT or DOCX)
+// File upload handler.
 function uploadFile(event) {
   const file = event.target.files[0];
   if (!file) return;
-  
   const fileName = file.name.toLowerCase();
   if (fileName.endsWith(".txt")) {
     const reader = new FileReader();
@@ -38,20 +40,18 @@ function uploadFile(event) {
   } else if (fileName.endsWith(".docx")) {
     file.arrayBuffer().then(buffer => {
       mammoth.extractRawText({ arrayBuffer: buffer })
-        .then(function(result) {
+        .then(result => {
           tasks = parseWishes(result.value);
           updateJar();
         })
-        .catch(function(err) {
-          console.error("Error reading DOCX:", err);
-        });
+        .catch(err => console.error("Error reading DOCX:", err));
     });
   } else {
     alert("Please upload a TXT or DOCX file.");
   }
 }
 
-// Load a dummy list of 50 wishes if needed
+// Load dummy wishes (50 wishes).
 function loadDummyWishes() {
   tasks = [];
   for (let i = 1; i <= 50; i++) {
@@ -60,7 +60,7 @@ function loadDummyWishes() {
   updateJar();
 }
 
-// Update jar display with realistic paper chits and random rotation
+// Update jar display.
 function updateJar() {
   document.getElementById("task-count").innerText = `${tasks.length} wish${tasks.length === 1 ? "" : "es"} loaded`;
   const chitsContainer = document.getElementById("chits");
@@ -75,7 +75,7 @@ function updateJar() {
   });
 }
 
-// Shuffle the tasks array using Fisher–Yates shuffle
+// Shuffle the tasks array (Fisher–Yates).
 function shuffleTasks(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -83,19 +83,16 @@ function shuffleTasks(arr) {
   }
 }
 
-// Animate hand picking a wish, then start a 5-second suspense timer before final popup
+// Pick a wish: shuffle, remove the first wish, animate hand, then start timer.
 function pickTask() {
   if (tasks.length < 1) {
     alert("No more wishes! Please upload a new list or load dummy wishes.");
     return;
   }
-  
-  // Shuffle tasks array for extra randomness, then choose the first wish
   shuffleTasks(tasks);
   const randomTask = tasks.shift();
   updateJar();
 
-  // Animate hand picking the wish
   const handContainer = document.getElementById("hand-container");
   handContainer.classList.remove("hidden");
   const hand = document.querySelector(".hand");
@@ -104,13 +101,12 @@ function pickTask() {
   hand.addEventListener("animationend", function handleAnimationEnd() {
     hand.style.animation = "";
     handContainer.classList.add("hidden");
-    // Start the 5-second suspense timer before revealing the final popup
     startSuspenseTimer(randomTask);
     hand.removeEventListener("animationend", handleAnimationEnd);
   });
 }
 
-// Start a 5-second countdown before revealing the final popup
+// Start a 5-second countdown, then reveal the final popup.
 function startSuspenseTimer(taskText) {
   const timerEl = document.getElementById("suspense-timer");
   const timerText = document.getElementById("timer-text");
@@ -129,7 +125,7 @@ function startSuspenseTimer(taskText) {
   }, 1000);
 }
 
-// Show the final popup with the chosen wish
+// Show the final popup.
 function showPopup(taskText) {
   document.getElementById("popup-text").innerText = taskText;
   const popup = document.getElementById("popup");
@@ -137,7 +133,7 @@ function showPopup(taskText) {
   popup.style.display = "flex";
 }
 
-// Close popup modal and trigger celebration animation
+// Close the popup and start celebration.
 function closePopup() {
   const popup = document.getElementById("popup");
   popup.classList.add("hidden");
@@ -145,7 +141,7 @@ function closePopup() {
   showCelebration();
 }
 
-// Celebration animation: confetti, party poppers, and stars
+// Celebration: create confetti, poppers, and stars.
 function showCelebration() {
   const celebration = document.getElementById("celebration");
   celebration.classList.remove("hidden");
@@ -193,7 +189,7 @@ function toggleLid() {
   lid.classList.toggle("open");
 }
 
-// Secret Message Section (stored in localStorage)
+// Secret Message Section
 function saveMessage() {
   const message = document.getElementById("messageInput").value;
   localStorage.setItem("secretMessage", message);

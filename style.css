@@ -70,7 +70,7 @@ textarea {
   perspective: 1000px;
 }
 
-/* Jar: no overflow hidden so the lid can animate freely */
+/* The jar: no overflow hidden so the lid can animate freely */
 .jar {
   position: relative;
   width: 100%;
@@ -100,7 +100,7 @@ textarea {
   transform: translateX(-50%) rotate(45deg) translateY(-60px);
 }
 
-/* Jar Body: clip-path for smooth jar shape and no visible scrollbar */
+/* Jar Body: clip-path for smooth jar shape and hidden scrollbar */
 .jar-body {
   position: absolute;
   top: 40px; /* leave space for the lid */
@@ -171,7 +171,7 @@ textarea {
   animation: chitFloat 3s ease-in-out infinite;
 }
 
-/* Suspense Timer (5s countdown) */
+/* Suspense Timer (5-second countdown) */
 #suspense-timer {
   position: absolute;
   top: 50%;
@@ -218,7 +218,7 @@ textarea {
   100% { left: 120%; opacity: 0; }
 }
 
-/* Final Popup Modal (only one popup) */
+/* Final Popup Modal */
 #popup {
   position: fixed;
   top: 0;
@@ -248,7 +248,7 @@ textarea {
   cursor: pointer;
 }
 
-/* Celebration (Confetti, Party Poppers, and Stars) */
+/* Celebration: Confetti, Party Poppers, and Stars */
 #celebration {
   position: fixed;
   top: 0;

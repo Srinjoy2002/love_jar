@@ -12,9 +12,12 @@
   <script defer src="script.js"></script>
 </head>
 <body>
+  <!-- Background Music (hidden audio element) -->
+  <audio id="background-music" src="music.mp3" preload="auto"></audio>
+
   <!-- Login Screen -->
   <div id="login-screen">
-    <h2>💕 Welcome to the Love Jar. Speak your dreams, and I'll be the genie to grant them—our love, our sweet little secret. 💕</h2>
+    <h2>💕 Welcome to the Love Jar. Speak your dreams, and I'll be the genie to grant them—our love, our secret. 💕</h2>
     <input type="text" id="username" placeholder="Enter your name"/>
     <button onclick="login()">Login</button>
   </div>
@@ -32,10 +35,10 @@
 
     <!-- File Upload Section -->
     <div id="upload-section">
-      <p>Share your most cherished wishes, my love.</p>
+      <p>Place your heartfelt wishes here, so I can fulfill them for only us two.</p>
       <input type="file" id="fileInput" accept=".txt,.docx" onchange="uploadFile(event)"/>
       <br/>
-      <!-- <button onclick="loadDummyWishes()">Load Dummy Wishes</button> -->
+      <button onclick="loadDummyWishes()">Load Dummy Wishes</button>
     </div>
 
     <!-- Display number of wishes loaded -->
