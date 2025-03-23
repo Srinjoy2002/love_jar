@@ -75,18 +75,27 @@ function updateJar() {
   });
 }
 
-// Animate hand picking a wish, then show a 5-second suspense timer, then final popup
+// Shuffle the tasks array using Fisher–Yates shuffle
+function shuffleTasks(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+// Animate hand picking a wish, then start a 5-second suspense timer before final popup
 function pickTask() {
   if (tasks.length < 1) {
     alert("No more wishes! Please upload a new list or load dummy wishes.");
     return;
   }
-  // Pick a random wish and remove from array
-  const index = Math.floor(Math.random() * tasks.length);
-  const randomTask = tasks.splice(index, 1)[0];
+  
+  // Shuffle tasks array for extra randomness, then choose the first wish
+  shuffleTasks(tasks);
+  const randomTask = tasks.shift();
   updateJar();
 
-  // Show the hand animation
+  // Animate hand picking the wish
   const handContainer = document.getElementById("hand-container");
   handContainer.classList.remove("hidden");
   const hand = document.querySelector(".hand");
@@ -95,20 +104,20 @@ function pickTask() {
   hand.addEventListener("animationend", function handleAnimationEnd() {
     hand.style.animation = "";
     handContainer.classList.add("hidden");
-    // Start the suspense timer for 5 seconds
+    // Start the 5-second suspense timer before revealing the final popup
     startSuspenseTimer(randomTask);
     hand.removeEventListener("animationend", handleAnimationEnd);
   });
 }
 
-// Start a 5-second suspense timer
+// Start a 5-second countdown before revealing the final popup
 function startSuspenseTimer(taskText) {
   const timerEl = document.getElementById("suspense-timer");
   const timerText = document.getElementById("timer-text");
   let count = 5;
   timerText.innerText = count;
   timerEl.classList.remove("hidden");
-  
+
   const countdown = setInterval(() => {
     count--;
     timerText.innerText = count;
@@ -128,7 +137,7 @@ function showPopup(taskText) {
   popup.style.display = "flex";
 }
 
-// Close popup modal and trigger celebration
+// Close popup modal and trigger celebration animation
 function closePopup() {
   const popup = document.getElementById("popup");
   popup.classList.add("hidden");
@@ -136,19 +145,18 @@ function closePopup() {
   showCelebration();
 }
 
-// Celebration with confetti, party poppers, and stars
+// Celebration animation: confetti, party poppers, and stars
 function showCelebration() {
   const celebration = document.getElementById("celebration");
   celebration.classList.remove("hidden");
   celebration.innerHTML = "";
   const totalShapes = 80;
   const shapeTypes = ["confetti", "popper", "star"];
-  
+
   for (let i = 0; i < totalShapes; i++) {
     const randomType = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
     const shape = document.createElement("div");
     shape.classList.add(randomType);
-    
     if (randomType === "confetti" || randomType === "popper") {
       const colors = ["#ff4d6d", "#ff8fab", "#ffccd5", "#fff0f6", "#fdd7b0", "#0ff", "#ff0", "#0f0"];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
